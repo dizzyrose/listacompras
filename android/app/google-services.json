@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "177367154127",
+    "project_id": "lista-de-compras-2022",
+    "storage_bucket": "lista-de-compras-2022.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:177367154127:android:a55e48056c1f33319126ba",
+        "android_client_info": {
+          "package_name": "com.vitorfranklin.listadecompras"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "177367154127-stkm1llmsrg4jq9ga6s9oba43l766v96.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANL2PQjPT7AOKSQJUp3D5jtwy-w7UqA1o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "177367154127-stkm1llmsrg4jq9ga6s9oba43l766v96.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
