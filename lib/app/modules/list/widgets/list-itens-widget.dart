@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:listadecompras/app/domain/app-globals.dart';
 import 'package:listadecompras/app/modules/home/widgets/slidable-widget.dart';
 import 'package:listadecompras/app/modules/list/widgets/list-itens-slidable-widget.dart';
 import 'package:listadecompras/app/repositories/list-itens-repository.dart';
@@ -13,16 +14,29 @@ class ListItensWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> listedItens = ListItensRepository().readItem(listID);
-    return Container(
-        child: ListView.builder(
-            itemCount: listedItens.length,
-            itemBuilder: (context, index) {
-              print(listedItens[index]);
-              return ListItensSlidebleWidget(
-                itemDescription: listedItens[index],
-                itemIndex: index,
-              );
-            }));
+    return FutureBuilder<dynamic>(
+        future: ListItensRepository().readItem(listID),
+        builder: (context, snap) {
+          if (snap.connectionState == ConnectionState.none &&
+              // ignore: unnecessary_null_comparison
+              snap.hasData == null) {
+            return CircularProgressIndicator();
+          }
+
+          return ListView.builder(
+              itemCount: snap.data?.length,
+              itemBuilder: (context, index) {
+                String _itemDescription = snap.data![index];
+                listItensRecoverd = List<String>.from(snap.data!);
+                return ListItensSlidebleWidget(
+                  itemDescription: _itemDescription,
+                  itemIndex: index,
+                );
+              });
+        });
+  }
+
+  listViwerWidget() async {
+    // print(listedItens[1]);
   }
 }

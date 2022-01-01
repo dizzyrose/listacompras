@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:listadecompras/app/domain/app-constants.dart';
-import 'package:listadecompras/app/repositories/list-repository.dart';
+import 'package:listadecompras/app/repositories/list-itens-repository.dart';
 
 class ListItensShowDialogWidget {
   TextEditingController titleListController = new TextEditingController();
 
-  Future<void> createNewList(var context) async {
+  Future<void> createNewList(
+      var context, List<String> _listItens, String _listID) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(createNewListTitle),
+          title: Text(createNewListItemTitle),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                new Text(listTitleText),
+                new Text(listItemTitleText),
                 new TextFormField(
                   controller: titleListController,
                 )
@@ -43,9 +44,10 @@ class ListItensShowDialogWidget {
                 ElevatedButton.icon(
                     onPressed: () {
                       if (titleListController.text.isNotEmpty) {
+                        _listItens.add(titleListController.text);
                         Modular.to.pop();
-                        ListRepository().createList(titleListController.text);
-                      } else {}
+                        ListItensRepository().createItem(_listItens, _listID);
+                      }
                     },
                     icon: Icon(Icons.save),
                     style: ElevatedButton.styleFrom(primary: Colors.blue),

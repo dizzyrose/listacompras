@@ -1,12 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:listadecompras/app/domain/app-constants.dart';
 import 'package:listadecompras/app/repositories/interfaces/list-itens-interface-repository.dart';
+import 'package:uuid/uuid.dart';
 
 class ListItensRepository implements IListItensRepository {
   @override
-  createItem() {
-    // TODO: implement createItem
-    throw UnimplementedError();
+  createItem(List<String> _itens, String _listID) {
+    FirebaseFirestore.instance
+        .collection('Usuarios')
+        .doc(userMail)
+        .collection('ListaDeCompras')
+        .doc(_listID)
+        .update({'ItensDaLista': _itens});
   }
 
   @override
@@ -16,14 +21,25 @@ class ListItensRepository implements IListItensRepository {
   }
 
   @override
-  readItem(String _listID) {
-    return FirebaseFirestore.instance
+  readItem(String _listID) async {
+    print(_listID);
+
+    var collection = FirebaseFirestore.instance
         .collection("Usuarios")
         .doc(userMail)
-        .collection('ListaDeCompras')
-        .doc(_listID)
-        .get();
+        .collection('ListaDeCompras');
+    var documentSnapshot = await collection.doc(_listID).get();
+
+    if (documentSnapshot.exists) {
+      Map<String, dynamic>? data = documentSnapshot.data();
+      var value = data?['ItensDaLista'];
+      return List<String>.from(value);
+    } else {
+      return [];
+    }
   }
+
+  //List<String>.from
 
   @override
   updateItem() {

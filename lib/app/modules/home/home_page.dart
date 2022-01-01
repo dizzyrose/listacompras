@@ -27,7 +27,7 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
       body: Column(
         children: [
           Container(
-              color: Colors.red,
+              //  color: Colors.red,
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * .8,
               child: Expanded(child: ListWidget()))

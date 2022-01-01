@@ -5,8 +5,10 @@ const String slidableShare = 'Compartilhar';
 const String slidableEdit = 'Editar';
 
 const String createNewListTitle = 'Criar nova lista';
+const String createNewListItemTitle = 'Adicionar novo Item';
 
 const String listTitleText = 'Titulo da Lista: ';
+const String listItemTitleText = 'Nome do item: ';
 const String listTitleTextClean = 'Limpar';
 const String listTitleTextCancel = 'Cancelar';
 const String listTitleTextSave = 'Salvar  ';

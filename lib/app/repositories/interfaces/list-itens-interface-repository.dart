@@ -1,5 +1,5 @@
 abstract class IListItensRepository {
-  createItem();
+  createItem(List<String> _item, String _listID);
   readItem(String _listID);
   updateItem();
   deleteItem();
