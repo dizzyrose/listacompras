@@ -46,7 +46,7 @@ class ListItensShowDialogWidget {
                       if (titleListController.text.isNotEmpty) {
                         _listItens.add(titleListController.text);
                         Modular.to.pop();
-                        ListItensRepository().createItem(_listItens, _listID);
+                        ListItensRepository().updateItem(_listItens, _listID);
                       }
                     },
                     icon: Icon(Icons.save),

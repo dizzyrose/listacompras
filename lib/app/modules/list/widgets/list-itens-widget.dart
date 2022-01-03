@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:intl/intl.dart';
 import 'package:listadecompras/app/domain/app-globals.dart';
 import 'package:listadecompras/app/modules/home/widgets/slidable-widget.dart';
+import 'package:listadecompras/app/modules/list/list_store.dart';
 import 'package:listadecompras/app/modules/list/widgets/list-itens-slidable-widget.dart';
 import 'package:listadecompras/app/repositories/list-itens-repository.dart';
 import 'package:listadecompras/app/repositories/list-repository.dart';
@@ -28,9 +30,11 @@ class ListItensWidget extends StatelessWidget {
               itemBuilder: (context, index) {
                 String _itemDescription = snap.data![index];
                 listItensRecoverd = List<String>.from(snap.data!);
-                return ListItensSlidebleWidget(
+                return ListItensSlidableWidget(
                   itemDescription: _itemDescription,
                   itemIndex: index,
+                  itemID: listID,
+                  itemColor: 0,
                 );
               });
         });

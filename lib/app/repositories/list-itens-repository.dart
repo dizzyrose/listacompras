@@ -5,7 +5,7 @@ import 'package:uuid/uuid.dart';
 
 class ListItensRepository implements IListItensRepository {
   @override
-  createItem(List<String> _itens, String _listID) {
+  updateItem(List<String> _itens, String _listID) {
     FirebaseFirestore.instance
         .collection('Usuarios')
         .doc(userMail)
@@ -37,13 +37,5 @@ class ListItensRepository implements IListItensRepository {
     } else {
       return [];
     }
-  }
-
-  //List<String>.from
-
-  @override
-  updateItem() {
-    // TODO: implement updateItem
-    throw UnimplementedError();
   }
 }

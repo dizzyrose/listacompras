@@ -42,7 +42,7 @@ class SlidebleWidget extends StatelessWidget {
             SlidableAction(
               //flex: 2,
               onPressed: null,
-              backgroundColor: Color(0xFF7BC043),
+              backgroundColor: Color(0xFF00BFA5),
               foregroundColor: Colors.white,
               icon: Icons.edit,
               label: slidableEdit,
@@ -50,7 +50,7 @@ class SlidebleWidget extends StatelessWidget {
           ],
         ),
         child: Card(
-          color: Colors.yellow,
+          color: Colors.white, //Color(0xFF1DE9B6),
           child: ListTile(title: Text(slideBleTitle)),
         ),
       ),
