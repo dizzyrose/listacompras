@@ -19,8 +19,6 @@ class ListPage extends StatefulWidget {
 }
 
 class ListPageState extends State<ListPage> {
-  final ListStore store = Modular.get();
-
   ListPageState({Key? key, required this.listID});
   final String listID;
 
@@ -29,41 +27,37 @@ class ListPageState extends State<ListPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        backgroundColor: Color(0xFF00BFA5),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Modular.to.navigate('/');
+            listItensRecoverd = [];
+          },
+        ),
         title: Text(widget.title),
       ),
-      body: Column(
-        children: <Widget>[
-          //   Text(listID),
-          Container(
-              //  color: Colors.red,
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * .7,
-              child: Expanded(
-                  child: ListItensWidget(
-                listID: listID,
-              ))),
-          Stack(
-            children: [
+      body: Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('lib/src/images/main-screen.png'),
+                  fit: BoxFit.cover)),
+          child: Column(
+            children: <Widget>[
+              //   Text(listID),
               Container(
-                height: MediaQuery.of(context).size.height * .15,
-                //  color: Colors.amber,
-                child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: FloatingActionButton(
-                    //   tooltip: tipBtnCreateList,
-                    onPressed: () {
-                      listItensRecoverd = [];
-                      Modular.to.navigate('/');
-                    },
-                    child: Icon(Icons.arrow_back),
-                  ),
-                ),
-              )
+                  //  color: Colors.red,
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * .7,
+                  child: Expanded(
+                      child: ListItensWidget(
+                    listID: listID,
+                  ))),
             ],
-          ),
-        ],
-      ),
+          )),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
         //   tooltip: tipBtnCreateList,
         onPressed: () {
           //listItensRecoverd

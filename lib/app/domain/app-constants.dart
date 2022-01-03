@@ -1,4 +1,4 @@
-const String titleHomePage = 'Lista de Compras 2022';
+const String titleHomePage = 'Lista de Compras';
 const String tipBtnCreateList = 'Criar nova lista de compras';
 const String slidableDelete = 'Deletar';
 const String slidableShare = 'Compartilhar';

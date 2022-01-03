@@ -5,8 +5,6 @@ import 'package:listadecompras/app/domain/app-constants.dart';
 import 'package:listadecompras/app/modules/home/home_store.dart';
 import 'package:listadecompras/app/modules/home/widgets/list-widget.dart';
 import 'package:listadecompras/app/modules/home/widgets/show-dialog-widget.dart';
-import 'package:listadecompras/app/modules/home/widgets/slidable-widget.dart';
-import 'package:listadecompras/app/repositories/list-repository.dart';
 
 class HomePage extends StatefulWidget {
   final String title;
@@ -22,19 +20,32 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text(titleHomePage),
+        title: Text(
+          titleHomePage.toUpperCase(),
+          style: TextStyle(color: Colors.white),
+          // textAlign: TextAlignVertical(),
+        ),
+        backgroundColor: Color(0xFF00BFA5),
       ),
-      body: Column(
-        children: [
-          Container(
-              //  color: Colors.red,
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * .8,
-              child: Expanded(child: ListWidget()))
-        ],
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('lib/src/images/main-screen.png'),
+                fit: BoxFit.cover)),
+        child: Column(
+          children: [
+            Container(
+                //  color: Colors.red,
+                // width: MediaQuery.of(context).size.width,
+                // height: MediaQuery.of(context).size.height * .8,
+                child: Expanded(child: ListWidget()))
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         tooltip: tipBtnCreateList,
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
         onPressed: () {
           ShowDialogWidget().createNewList(context);
 //          ListRepository().createList();
