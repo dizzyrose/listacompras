@@ -33,13 +33,7 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                 image: AssetImage('lib/src/images/main-screen.png'),
                 fit: BoxFit.cover)),
         child: Column(
-          children: [
-            Container(
-                //  color: Colors.red,
-                // width: MediaQuery.of(context).size.width,
-                // height: MediaQuery.of(context).size.height * .8,
-                child: Expanded(child: ListWidget()))
-          ],
+          children: [Expanded(child: ListWidget())],
         ),
       ),
       floatingActionButton: FloatingActionButton(

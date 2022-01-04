@@ -3,111 +3,89 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:listadecompras/app/domain/app-constants.dart';
-import 'package:listadecompras/app/domain/app-globals.dart';
 import 'package:listadecompras/app/modules/list/list_store.dart';
-import 'package:listadecompras/app/repositories/list-itens-repository.dart';
 import 'package:uuid/uuid.dart';
 
 class ListItensSlidableWidget extends StatefulWidget {
   const ListItensSlidableWidget(
-      {Key? key,
-      required this.itemDescription,
-      required this.itemIndex,
-      required this.itemID,
-      required this.itemColor})
+      {Key? key, required this.store, required this.index})
       : super(key: key);
-  final String itemDescription;
-  final int itemIndex;
-  final String itemID;
-  final int itemColor;
+  final ListStore store;
+  final int index;
+
   @override
   _ListItensSlidableWidgetState createState() => _ListItensSlidableWidgetState(
-      key: UniqueKey(),
-      itemDescription: itemDescription,
-      itemIndex: itemIndex,
-      itemID: itemID,
-      itemColor: itemColor);
+      key: UniqueKey(), store: store, index: index);
 }
 
-class _ListItensSlidableWidgetState extends State<ListItensSlidableWidget> {
+class _ListItensSlidableWidgetState
+    extends ModularState<ListItensSlidableWidget, ListStore> {
   _ListItensSlidableWidgetState(
-      {Key? key,
-      required this.itemDescription,
-      required this.itemIndex,
-      required this.itemID,
-      required this.itemColor});
+      {Key? key, required this.store, required this.index});
 
-  final ListStore store = Modular.get();
-  final String itemDescription;
-  final int itemIndex;
-  final String itemID;
-  final int itemColor;
+  final ListStore store;
+  final int index;
   final _formKey = GlobalKey<FormState>();
 
   @override
-  Widget build(BuildContext context) {
-    var oldColor = false;
+  void initState() {
     store.setDefaultValues();
     store.setInitValues();
+    reassemble();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
-        child: Slidable(
-      key: Key(Uuid().v1().toString()),
-      startActionPane: ActionPane(
-        motion: ScrollMotion(),
-        dismissible: DismissiblePane(onDismissed: () {
-          listItensRecoverd.removeAt(itemIndex);
-          ListItensRepository().updateItem(listItensRecoverd, itemID);
-          store.updateList(itemIndex);
-        }),
-        children: [
-          SlidableAction(
-            onPressed: (value) {},
-            backgroundColor: Color(0xFFFE4A49),
-            foregroundColor: Colors.white,
-            icon: Icons.delete,
-            label: slidableDelete,
-          ),
-        ],
-      ),
-      endActionPane: ActionPane(
-        motion: ScrollMotion(),
-        dismissible: DismissiblePane(onDismissed: () {}),
-        children: [
-          SlidableAction(
-            onPressed: (value) {
-              print("colorChanged");
-              store.changeColor(itemIndex, oldColor);
-              oldColor = !oldColor;
-            },
-            backgroundColor: Color(0xFF7BC043),
-            foregroundColor: Colors.white,
-            icon: Icons.edit,
-            label: slidableEdit,
-          ),
-        ],
-      ),
-      child: Observer(
-        builder: (_) => Card(
+      child: Slidable(
           key: Key(Uuid().v1().toString()),
-          color: Color(store.colorCard[itemIndex]),
-          child: Form(
-              // autovalidateMode: AutovalidateMode.disabled,
-              key: _formKey,
-              child: TextFormField(
-                autofocus: false,
-                controller: store.txtItemDescription[itemIndex],
-                onEditingComplete: () {
-                  for (int i = 0; i < listItensRecoverd.length; i++) {
-                    print(listItensRecoverd[i]);
-                  }
-                  listItensRecoverd.removeAt(itemIndex);
-                  listItensRecoverd.insert(
-                      itemIndex, store.txtItemDescription[itemIndex].text);
-                  ListItensRepository().updateItem(listItensRecoverd, itemID);
+          startActionPane: ActionPane(
+            motion: const ScrollMotion(),
+            dismissible: DismissiblePane(onDismissed: () {
+              store.removeItemDescription(index);
+            }),
+            children: [
+              SlidableAction(
+                onPressed: (value) {},
+                backgroundColor: Color(0xFFFE4A49),
+                foregroundColor: Colors.white,
+                icon: Icons.delete,
+                label: slidableDelete,
+              ),
+            ],
+          ),
+          endActionPane: ActionPane(
+            motion: const ScrollMotion(),
+            children: [
+              SlidableAction(
+                onPressed: (value) {
+                  print("value: " + value.toString());
+                  store.changeColor(store.itemIndex[index]);
                 },
-              )),
-        ),
-      ),
-    ));
+                backgroundColor: Color(0xFF7BC043),
+                foregroundColor: Colors.white,
+                icon: Icons.edit,
+                label: slidableEdit,
+              ),
+            ],
+          ),
+          child: Observer(
+              builder: (context) => Card(
+                    key: Key(Uuid().v1().toString()),
+                    color: store.colorCard[store.itemIndex[index]],
+                    child: Form(
+                        // autovalidateMode: AutovalidateMode.disabled,
+                        key: _formKey,
+                        child: TextFormField(
+                          autofocus: false,
+                          controller:
+                              store.txtItemDescription[store.itemIndex[index]],
+                          onChanged: (value) {
+                            store.updateItemDesciption(value, index);
+                          },
+                        )),
+                  ))),
+    );
   }
 }

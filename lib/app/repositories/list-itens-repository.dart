@@ -1,17 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:listadecompras/app/domain/app-constants.dart';
+import 'package:listadecompras/app/modules/list/list_store.dart';
 import 'package:listadecompras/app/repositories/interfaces/list-itens-interface-repository.dart';
 import 'package:uuid/uuid.dart';
 
 class ListItensRepository implements IListItensRepository {
   @override
-  updateItem(List<String> _itens, String _listID) {
+  updateItem(var itemID, var itemDescription) {
     FirebaseFirestore.instance
         .collection('Usuarios')
         .doc(userMail)
         .collection('ListaDeCompras')
-        .doc(_listID)
-        .update({'ItensDaLista': _itens});
+        .doc(itemID)
+        .update({'ItensDaLista': itemDescription});
   }
 
   @override
