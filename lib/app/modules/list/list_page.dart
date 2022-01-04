@@ -1,11 +1,9 @@
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:listadecompras/app/domain/app-globals.dart';
 import 'package:listadecompras/app/modules/list/list_store.dart';
 import 'package:flutter/material.dart';
 import 'package:listadecompras/app/modules/list/widgets/list-itens-show-dialog-widget.dart';
 import 'package:listadecompras/app/modules/list/widgets/list-itens-widget.dart';
-import 'package:listadecompras/app/repositories/list-itens-repository.dart';
 import 'package:mobx/mobx.dart';
 
 class ListPage extends StatefulWidget {
@@ -28,12 +26,14 @@ class ListPageState extends ModularState<ListPage, ListStore> {
   @override
   void initState() {
     store.itemID = listID;
+    store.itemDescription = ObservableList<String>();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+        child: Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Color(0xFF00BFA5),
@@ -56,7 +56,7 @@ class ListPageState extends ModularState<ListPage, ListStore> {
             // height: MediaQuery.of(context).size.height * .7,
             child: Column(
           children: [
-            Expanded(child: ListItensWidget(store: store)),
+            Observer(builder: (context) => ListItensWidget(store: store)),
           ],
         )),
       ),
@@ -71,6 +71,6 @@ class ListPageState extends ModularState<ListPage, ListStore> {
         child: Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    );
+    ));
   }
 }

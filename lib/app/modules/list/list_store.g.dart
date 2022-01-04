@@ -24,21 +24,6 @@ mixin _$ListStore on _ListStoreBase, Store {
     });
   }
 
-  final _$itemIndexAtom = Atom(name: '_ListStoreBase.itemIndex');
-
-  @override
-  ObservableList<int> get itemIndex {
-    _$itemIndexAtom.reportRead();
-    return super.itemIndex;
-  }
-
-  @override
-  set itemIndex(ObservableList<int> value) {
-    _$itemIndexAtom.reportWrite(value, super.itemIndex, () {
-      super.itemIndex = value;
-    });
-  }
-
   final _$itemIDAtom = Atom(name: '_ListStoreBase.itemID');
 
   @override
@@ -115,19 +100,17 @@ mixin _$ListStore on _ListStoreBase, Store {
     });
   }
 
-  final _$_ListStoreBaseActionController =
-      ActionController(name: '_ListStoreBase');
+  final _$getAllItemDescriptionAsyncAction =
+      AsyncAction('_ListStoreBase.getAllItemDescription');
 
   @override
-  dynamic setItemIndex(dynamic _itemIndex) {
-    final _$actionInfo = _$_ListStoreBaseActionController.startAction(
-        name: '_ListStoreBase.setItemIndex');
-    try {
-      return super.setItemIndex(_itemIndex);
-    } finally {
-      _$_ListStoreBaseActionController.endAction(_$actionInfo);
-    }
+  Future getAllItemDescription() {
+    return _$getAllItemDescriptionAsyncAction
+        .run(() => super.getAllItemDescription());
   }
+
+  final _$_ListStoreBaseActionController =
+      ActionController(name: '_ListStoreBase');
 
   @override
   dynamic setItemID(dynamic _itemID) {
@@ -163,33 +146,22 @@ mixin _$ListStore on _ListStoreBase, Store {
   }
 
   @override
-  dynamic updateItemDesciption(dynamic value, dynamic _index) {
+  dynamic updateItemDesciption(dynamic _index, dynamic value) {
     final _$actionInfo = _$_ListStoreBaseActionController.startAction(
         name: '_ListStoreBase.updateItemDesciption');
     try {
-      return super.updateItemDesciption(value, _index);
+      return super.updateItemDesciption(_index, value);
     } finally {
       _$_ListStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  dynamic setDefaultValues() {
+  dynamic updateTextFormField() {
     final _$actionInfo = _$_ListStoreBaseActionController.startAction(
-        name: '_ListStoreBase.setDefaultValues');
+        name: '_ListStoreBase.updateTextFormField');
     try {
-      return super.setDefaultValues();
-    } finally {
-      _$_ListStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic setInitValues() {
-    final _$actionInfo = _$_ListStoreBaseActionController.startAction(
-        name: '_ListStoreBase.setInitValues');
-    try {
-      return super.setInitValues();
+      return super.updateTextFormField();
     } finally {
       _$_ListStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -210,7 +182,6 @@ mixin _$ListStore on _ListStoreBase, Store {
   String toString() {
     return '''
 itemDescription: ${itemDescription},
-itemIndex: ${itemIndex},
 itemID: ${itemID},
 lowLightColor: ${lowLightColor},
 highLigthColor: ${highLigthColor},
