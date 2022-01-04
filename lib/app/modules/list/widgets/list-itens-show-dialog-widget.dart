@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:listadecompras/app/domain/app-constants.dart';
 import 'package:listadecompras/app/modules/list/list_store.dart';
-import 'package:listadecompras/app/repositories/list-itens-repository.dart';
 
 class ListItensShowDialogWidget {
   TextEditingController titleListController = new TextEditingController();
@@ -46,6 +45,7 @@ class ListItensShowDialogWidget {
                       if (titleListController.text.isNotEmpty) {
                         Modular.to.pop();
                         store.addItemDescription(titleListController.text);
+                        store.updateTextFormField();
                       }
                     },
                     icon: Icon(Icons.save),

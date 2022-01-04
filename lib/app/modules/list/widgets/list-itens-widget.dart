@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:listadecompras/app/modules/list/list_store.dart';
 import 'package:listadecompras/app/modules/list/widgets/list-itens-slidable-widget.dart';
-import 'package:listadecompras/app/repositories/list-itens-repository.dart';
-import 'package:mobx/mobx.dart';
-import 'package:uuid/uuid.dart';
 
 class ListItensWidget extends StatelessWidget {
   final ListStore store;
@@ -13,25 +10,22 @@ class ListItensWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<dynamic>(
-        future: ListItensRepository().readItem(store.itemID),
-        builder: (context, snap) {
-          if (snap.connectionState == ConnectionState.none &&
-              // ignore: unnecessary_null_comparison
-              snap.hasData == null) {
-            return CircularProgressIndicator();
-          }
+    store.getAllItemDescription();
 
-          return ListView.builder(
-              itemCount: snap.data?.length,
-              itemBuilder: (context, index) {
-                store.setItemIndex(index);
-                store.itemDescription.add(snap.data[index]);
-                return new ListItensSlidableWidget(
-                  store: store,
-                  index: index,
-                );
-              });
-        });
+    //print("log --Item: " + store.itemDescription[0]);
+    return Expanded(
+        child: Observer(
+            builder: (context) => ListView.builder(
+                itemCount: store.itemDescription.length,
+                key: UniqueKey(),
+                itemBuilder: (context, index) {
+                  print("log --Index: : " +
+                      index.toString() +
+                      "---itemDescription: " +
+                      store.itemDescription[index] +
+                      "----------------------");
+                  return new ListItensSlidableWidget(
+                      store: store, index: index, key: UniqueKey());
+                })));
   }
 }

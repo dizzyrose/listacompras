@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:listadecompras/app/domain/app-constants.dart';
 import 'package:listadecompras/app/modules/list/list_store.dart';
+import 'package:listadecompras/app/modules/list/widgets/list-card-widget.dart';
 import 'package:uuid/uuid.dart';
 
 class ListItensSlidableWidget extends StatefulWidget {
@@ -25,67 +25,58 @@ class _ListItensSlidableWidgetState
 
   final ListStore store;
   final int index;
-  final _formKey = GlobalKey<FormState>();
+
+  final formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
-    store.setDefaultValues();
-    store.setInitValues();
     reassemble();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    print("log -- Slidable Construction, index: " + index.toString());
     return Container(
-      child: Slidable(
-          key: Key(Uuid().v1().toString()),
-          startActionPane: ActionPane(
-            motion: const ScrollMotion(),
-            dismissible: DismissiblePane(onDismissed: () {
+        child: Slidable(
+      key: Key(Uuid().v1().toString()),
+      startActionPane: ActionPane(
+        motion: ScrollMotion(),
+        // dismissible: DismissiblePane(onDismissed: () {
+
+        // }),
+        children: [
+          SlidableAction(
+            onPressed: (value) {
               store.removeItemDescription(index);
-            }),
-            children: [
-              SlidableAction(
-                onPressed: (value) {},
-                backgroundColor: Color(0xFFFE4A49),
-                foregroundColor: Colors.white,
-                icon: Icons.delete,
-                label: slidableDelete,
-              ),
-            ],
+              store.updateTextFormField();
+            },
+            backgroundColor: Color(0xFFFE4A49),
+            foregroundColor: Colors.white,
+            icon: Icons.delete,
+            label: slidableDelete,
           ),
-          endActionPane: ActionPane(
-            motion: const ScrollMotion(),
-            children: [
-              SlidableAction(
-                onPressed: (value) {
-                  print("value: " + value.toString());
-                  store.changeColor(store.itemIndex[index]);
-                },
-                backgroundColor: Color(0xFF7BC043),
-                foregroundColor: Colors.white,
-                icon: Icons.edit,
-                label: slidableEdit,
-              ),
-            ],
+        ],
+      ),
+      endActionPane: ActionPane(
+        motion: ScrollMotion(),
+        children: [
+          SlidableAction(
+            onPressed: (value) {
+              store.changeColor(index);
+            },
+            backgroundColor: Color(0xFF7BC043),
+            foregroundColor: Colors.white,
+            icon: Icons.edit,
+            label: slidableEdit,
           ),
-          child: Observer(
-              builder: (context) => Card(
-                    key: Key(Uuid().v1().toString()),
-                    color: store.colorCard[store.itemIndex[index]],
-                    child: Form(
-                        // autovalidateMode: AutovalidateMode.disabled,
-                        key: _formKey,
-                        child: TextFormField(
-                          autofocus: false,
-                          controller:
-                              store.txtItemDescription[store.itemIndex[index]],
-                          onChanged: (value) {
-                            store.updateItemDesciption(value, index);
-                          },
-                        )),
-                  ))),
-    );
+        ],
+      ),
+      child: CardWidget(
+        store: store,
+        index: index,
+        formKey: formKey,
+      ),
+    ));
   }
 }

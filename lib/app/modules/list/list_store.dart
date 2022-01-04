@@ -11,9 +11,6 @@ abstract class _ListStoreBase with Store {
   ObservableList<String> itemDescription = ObservableList<String>();
 
   @observable
-  ObservableList<int> itemIndex = ObservableList<int>();
-
-  @observable
   String itemID = "";
 
   @observable
@@ -30,11 +27,6 @@ abstract class _ListStoreBase with Store {
   ObservableList<Color> colorCard = ObservableList<Color>();
 
   @action
-  setItemIndex(var _itemIndex) {
-    itemIndex.add(_itemIndex);
-  }
-
-  @action
   setItemID(var _itemID) {
     itemID = _itemID;
   }
@@ -43,33 +35,59 @@ abstract class _ListStoreBase with Store {
   addItemDescription(var value) {
     itemDescription.add(value);
     ListItensRepository().updateItem(itemID, itemDescription);
+    print("log --List item named: " +
+        value +
+        " add in te index: " +
+        itemDescription.length.toString());
+    print("log--Index 0:" + itemDescription[0]);
   }
 
   @action
   removeItemDescription(var _index) {
-    itemDescription.removeAt(itemIndex[_index]);
+    var _oldValue = itemDescription[_index];
+    itemDescription.removeAt(_index);
     ListItensRepository().updateItem(itemID, itemDescription);
+    print("log --List item index " +
+        _index.toString() +
+        " named: " +
+        _oldValue +
+        " removed");
   }
 
   @action
-  updateItemDesciption(var value, var _index) {
-    itemDescription.removeAt(itemIndex[_index]);
-    itemDescription.insert(itemIndex[_index], value);
-    ListItensRepository().updateItem(itemID, itemDescription);
+  updateItemDesciption(var _index, var value) {
+    var _oldValue = itemDescription[_index];
+    itemDescription.removeAt(_index);
+    itemDescription.insert(_index, value);
+
+    print("log --List item index " +
+        _index.toString() +
+        " named: " +
+        _oldValue +
+        " changed to: " +
+        itemDescription[_index]);
   }
 
   @action
-  setDefaultValues() {
-    txtItemDescription = ObservableList<TextEditingController>();
-    colorCard = ObservableList<Color>();
+  getAllItemDescription() async {
+    //itemDescription = ObservableList<String>.of(['a', 'b', 'c']);
+    itemDescription =
+        ObservableList<String>.of(await ListItensRepository().readItem(itemID));
+    print("log --Recoverd Itens");
+
     for (int i = 0; i < itemDescription.length; i++) {
+      print("log --Item index: " +
+          i.toString() +
+          " named: " +
+          itemDescription[i]);
       colorCard.add(lowLightColor);
       txtItemDescription.add(new TextEditingController());
+      txtItemDescription[i].text = itemDescription[i];
     }
   }
 
   @action
-  setInitValues() {
+  updateTextFormField() {
     for (int i = 0; i < itemDescription.length; i++) {
       txtItemDescription[i].text = itemDescription[i];
     }
@@ -77,17 +95,17 @@ abstract class _ListStoreBase with Store {
 
   @action
   changeColor(int _index) {
-    print('received index: ' + _index.toString());
-    print('length of elements: ' + colorCard.length.toString());
+    print('log --received index: ' + _index.toString());
+    print('log --length of elements: ' + colorCard.length.toString());
 
-    print("-----------------------");
+    print("log -------------------------");
 
     if (colorCard[_index] == lowLightColor) {
-      print("Card nº " + (_index + 1).toString() + "Mudar para Amarela");
+      print("log --Card nº " + (_index + 1).toString() + "Mudar para Amarela");
       colorCard.removeAt(_index);
       colorCard.insert(_index, highLigthColor);
     } else {
-      print("Card nº " + (_index + 1).toString() + "Mudar para Branca");
+      print("log --Card nº " + (_index + 1).toString() + "Mudar para Branca");
       colorCard.removeAt(_index);
       colorCard.insert(_index, lowLightColor);
     }
