@@ -1,11 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:listadecompras/app/modules/list/list_store.dart';
 
 void main() {
-  late ListStore store;
+  //late ListStore store;
 
   setUpAll(() {
-    store = ListStore();
+    // store = ListStore();
   });
 
   test('increment count', () async {

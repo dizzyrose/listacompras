@@ -73,13 +73,13 @@ mixin _$ListStore on _ListStoreBase, Store {
       Atom(name: '_ListStoreBase.txtItemDescription');
 
   @override
-  ObservableList<TextEditingController> get txtItemDescription {
+  ObservableList<TextEditingController>? get txtItemDescription {
     _$txtItemDescriptionAtom.reportRead();
     return super.txtItemDescription;
   }
 
   @override
-  set txtItemDescription(ObservableList<TextEditingController> value) {
+  set txtItemDescription(ObservableList<TextEditingController>? value) {
     _$txtItemDescriptionAtom.reportWrite(value, super.txtItemDescription, () {
       super.txtItemDescription = value;
     });
@@ -100,6 +100,42 @@ mixin _$ListStore on _ListStoreBase, Store {
     });
   }
 
+  final _$addItemDescriptionAsyncAction =
+      AsyncAction('_ListStoreBase.addItemDescription');
+
+  @override
+  Future<bool> addItemDescription(dynamic value) {
+    return _$addItemDescriptionAsyncAction
+        .run(() => super.addItemDescription(value));
+  }
+
+  final _$removeItemDescriptionAsyncAction =
+      AsyncAction('_ListStoreBase.removeItemDescription');
+
+  @override
+  Future removeItemDescription(dynamic _index) {
+    return _$removeItemDescriptionAsyncAction
+        .run(() => super.removeItemDescription(_index));
+  }
+
+  final _$updateAllItensDescriptionAsyncAction =
+      AsyncAction('_ListStoreBase.updateAllItensDescription');
+
+  @override
+  Future updateAllItensDescription() {
+    return _$updateAllItensDescriptionAsyncAction
+        .run(() => super.updateAllItensDescription());
+  }
+
+  final _$updateItemDescriptionAsyncAction =
+      AsyncAction('_ListStoreBase.updateItemDescription');
+
+  @override
+  Future updateItemDescription(dynamic _index, dynamic value) {
+    return _$updateItemDescriptionAsyncAction
+        .run(() => super.updateItemDescription(_index, value));
+  }
+
   final _$getAllItemDescriptionAsyncAction =
       AsyncAction('_ListStoreBase.getAllItemDescription');
 
@@ -118,39 +154,6 @@ mixin _$ListStore on _ListStoreBase, Store {
         name: '_ListStoreBase.setItemID');
     try {
       return super.setItemID(_itemID);
-    } finally {
-      _$_ListStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic addItemDescription(dynamic value) {
-    final _$actionInfo = _$_ListStoreBaseActionController.startAction(
-        name: '_ListStoreBase.addItemDescription');
-    try {
-      return super.addItemDescription(value);
-    } finally {
-      _$_ListStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic removeItemDescription(dynamic _index) {
-    final _$actionInfo = _$_ListStoreBaseActionController.startAction(
-        name: '_ListStoreBase.removeItemDescription');
-    try {
-      return super.removeItemDescription(_index);
-    } finally {
-      _$_ListStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic updateItemDesciption(dynamic _index, dynamic value) {
-    final _$actionInfo = _$_ListStoreBaseActionController.startAction(
-        name: '_ListStoreBase.updateItemDesciption');
-    try {
-      return super.updateItemDesciption(_index, value);
     } finally {
       _$_ListStoreBaseActionController.endAction(_$actionInfo);
     }

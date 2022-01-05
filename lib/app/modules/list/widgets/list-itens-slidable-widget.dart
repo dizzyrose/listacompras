@@ -26,14 +26,6 @@ class _ListItensSlidableWidgetState
   final ListStore store;
   final int index;
 
-  final formKey = GlobalKey<FormState>();
-
-  @override
-  void initState() {
-    reassemble();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     print("log -- Slidable Construction, index: " + index.toString());
@@ -75,7 +67,6 @@ class _ListItensSlidableWidgetState
       child: CardWidget(
         store: store,
         index: index,
-        formKey: formKey,
       ),
     ));
   }

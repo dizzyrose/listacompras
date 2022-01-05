@@ -1,5 +1,5 @@
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:listadecompras/app/domain/app-constants.dart';
 import 'package:listadecompras/app/modules/list/list_store.dart';
 import 'package:flutter/material.dart';
 import 'package:listadecompras/app/modules/list/widgets/list-itens-show-dialog-widget.dart';
@@ -22,6 +22,7 @@ class ListPageState extends ModularState<ListPage, ListStore> {
   ListPageState({Key? key, required this.listID});
   final String listID;
   ListStore store = Modular.get();
+  TextEditingController titleListController = new TextEditingController();
 
   @override
   void initState() {
@@ -40,6 +41,7 @@ class ListPageState extends ModularState<ListPage, ListStore> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
+            store.updateAllItensDescription();
             Modular.to.navigate('/');
           },
         ),
@@ -56,7 +58,7 @@ class ListPageState extends ModularState<ListPage, ListStore> {
             // height: MediaQuery.of(context).size.height * .7,
             child: Column(
           children: [
-            Observer(builder: (context) => ListItensWidget(store: store)),
+            ListItensWidget(store: store),
           ],
         )),
       ),
@@ -65,12 +67,83 @@ class ListPageState extends ModularState<ListPage, ListStore> {
         foregroundColor: Colors.black,
         //   tooltip: tipBtnCreateList,
         onPressed: () {
-          //listItensRecoverd
-          ListItensShowDialogWidget().createNewList(store, context);
+          createNewList(context);
         },
         child: Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     ));
+  }
+
+  Future<void> createNewList(var context) async {
+    showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(createNewListItemTitle),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  new Text(listItemTitleText),
+                  new TextFormField(
+                    controller: titleListController,
+                  )
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              new Row(
+                children: [
+                  ElevatedButton.icon(
+                      onPressed: () {
+                        Modular.to.pop();
+                      },
+                      icon: Icon(Icons.cancel),
+                      style: ElevatedButton.styleFrom(primary: Colors.red),
+                      label: Text(listTitleTextCancel,
+                          style: TextStyle(
+                              fontSize: 11,
+                              //   fontStyle: FontStyle.italic,
+                              color: Colors.white))),
+                  Container(
+                    width: MediaQuery.of(context).size.width / 6,
+                  ),
+                  ElevatedButton.icon(
+                      onPressed: () async {
+                        try {
+                          if (titleListController.text.isNotEmpty) {
+                            Navigator.of(context).pop();
+                            var oldValue = store.itemDescription.length;
+                            bool addItem = await store
+                                .addItemDescription(titleListController.text);
+                            bool getAllItens =
+                                await store.getAllItemDescription();
+                            bool updateAllItens =
+                                await store.updateAllItensDescription();
+                            await store.updateTextFormField();
+                            await asyncWhen((_) =>
+                                addItem && getAllItens && updateAllItens);
+                            print("log --: old size: " +
+                                oldValue.toString() +
+                                " new size: " +
+                                store.itemDescription.length.toString());
+                          }
+                        } catch (e) {
+                          print("log -- error on add item: " + e.toString());
+                        }
+                      },
+                      icon: Icon(Icons.save),
+                      style: ElevatedButton.styleFrom(primary: Colors.blue),
+                      label: Text(listTitleTextSave,
+                          style: TextStyle(
+                              fontSize: 11,
+                              //   fontStyle: FontStyle.italic,
+                              color: Colors.white))),
+                ],
+              )
+            ],
+          );
+        });
   }
 }

@@ -1,37 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:listadecompras/app/modules/list/list_store.dart';
-import 'package:listadecompras/app/repositories/list-itens-repository.dart';
-import 'package:uuid/uuid.dart';
 
-class CardWidget extends StatelessWidget {
+class CardWidget extends StatefulWidget {
+  const CardWidget({Key? key, required this.index, required this.store})
+      : super(key: key);
   final ListStore store;
   final int index;
-  final GlobalKey<FormState> formKey;
-  CardWidget(
-      {Key? key,
-      required this.store,
-      required this.index,
-      required this.formKey})
-      : super(key: key);
+
+  @override
+  CardWidgetState createState() => CardWidgetState(index: index, store: store);
+}
+
+class CardWidgetState extends ModularState<CardWidget, ListStore> {
+  final ListStore store;
+  final int index;
+
+  CardWidgetState({
+    Key? key,
+    required this.store,
+    required this.index,
+  });
+
+  @override
+  void initState() {
+    if (index == store.itemDescription.length) {
+      print("Mierda");
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    //if(index<store.itemDescription)
     return Observer(
         builder: (context) => Card(
-              key: Key(Uuid().v1().toString()),
+              key: UniqueKey(),
               color: store.colorCard[index],
               child: Form(
                   autovalidateMode: AutovalidateMode.disabled,
                   key: UniqueKey(),
                   child: TextFormField(
                     autofocus: false,
-                    controller: store.txtItemDescription[index],
-                    onChanged: (value) {
-                      store.updateItemDesciption(index, value);
-                      ListItensRepository()
-                          .updateItem(store.itemID, store.itemDescription);
+                    controller: store.txtItemDescription![index],
+                    onTap: () {
+                      store.updateAllItensDescription();
                     },
+                    onChanged: (value) async {
+                      //  isChanged = true;
+                      //  await store.updateItemDesciption(index, value);
+                    },
+                    onFieldSubmitted: (value) async =>
+                        store.updateAllItensDescription(),
                   )),
             ));
   }

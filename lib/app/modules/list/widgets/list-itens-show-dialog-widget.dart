@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:listadecompras/app/domain/app-constants.dart';
 import 'package:listadecompras/app/modules/list/list_store.dart';
+import 'package:mobx/mobx.dart';
 
 class ListItensShowDialogWidget {
   TextEditingController titleListController = new TextEditingController();
@@ -41,11 +42,29 @@ class ListItensShowDialogWidget {
                   width: MediaQuery.of(context).size.width / 6,
                 ),
                 ElevatedButton.icon(
-                    onPressed: () {
-                      if (titleListController.text.isNotEmpty) {
-                        Modular.to.pop();
-                        store.addItemDescription(titleListController.text);
-                        store.updateTextFormField();
+                    onPressed: () async {
+                      try {
+                        if (titleListController.text.isNotEmpty) {
+                          Navigator.of(context).pop();
+                          var oldValue = store.itemDescription.length;
+                          bool addItem = await store
+                              .addItemDescription(titleListController.text);
+                          bool getAllItens =
+                              await store.getAllItemDescription();
+                          bool updateAllItens =
+                              await store.updateAllItensDescription();
+
+                          // await store.updateTextFormField();
+                          await asyncWhen(
+                              (_) => addItem && getAllItens && updateAllItens);
+                          // (_) => addItem && updateAllItens);
+                          print("log --: old size: " +
+                              oldValue.toString() +
+                              " new size: " +
+                              store.itemDescription.length.toString());
+                        }
+                      } catch (e) {
+                        print("log -- error on add item: " + e.toString());
                       }
                     },
                     icon: Icon(Icons.save),
