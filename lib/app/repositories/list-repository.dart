@@ -7,26 +7,26 @@ class ListRepository implements IListRepository {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
-  createList(String _listName) {
+  createList(String _listTitle, String _listColor) {
     firestore
-        .collection('Usuarios')
+        .collection('Users')
         .doc(userMail)
-        .collection('ListaDeCompras')
+        .collection('List')
         .doc(Uuid().v1())
         .set({
       'InsertedAt': DateTime.now(),
       'CreatedBy': userMail,
-      'TituloDaLista': _listName,
-      'ItensDaLista': []
+      'ListTitle': _listTitle,
+      'TitleColor': _listColor
     });
   }
 
   @override
   deleteList(String _listID) {
     FirebaseFirestore.instance
-        .collection("Usuarios")
+        .collection("Users")
         .doc(userMail)
-        .collection('ListaDeCompras')
+        .collection('List')
         .doc(_listID)
         .delete();
   }
@@ -34,9 +34,9 @@ class ListRepository implements IListRepository {
   @override
   readList() {
     return FirebaseFirestore.instance
-        .collection("Usuarios")
+        .collection("Users")
         .doc(userMail)
-        .collection('ListaDeCompras')
+        .collection('List')
         .where('CreatedBy', isEqualTo: userMail)
         .snapshots();
   }

@@ -26,8 +26,7 @@ class ListWidget extends StatelessWidget {
                       DateTime.fromMicrosecondsSinceEpoch(
                           doc.get("InsertedAt").microsecondsSinceEpoch));
                   return SlidebleWidget(
-                    slideBleTitle:
-                        doc.get('TituloDaLista') + " - " + insertedAt,
+                    slideBleTitle: doc.get('ListTitle') + " - " + insertedAt,
                     listID: doc.id,
                   );
                 },

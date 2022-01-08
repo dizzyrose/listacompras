@@ -24,18 +24,63 @@ mixin _$ListStore on _ListStoreBase, Store {
     });
   }
 
+  final _$indexAtom = Atom(name: '_ListStoreBase.index');
+
+  @override
+  int get index {
+    _$indexAtom.reportRead();
+    return super.index;
+  }
+
+  @override
+  set index(int value) {
+    _$indexAtom.reportWrite(value, super.index, () {
+      super.index = value;
+    });
+  }
+
+  final _$listIDAtom = Atom(name: '_ListStoreBase.listID');
+
+  @override
+  String get listID {
+    _$listIDAtom.reportRead();
+    return super.listID;
+  }
+
+  @override
+  set listID(String value) {
+    _$listIDAtom.reportWrite(value, super.listID, () {
+      super.listID = value;
+    });
+  }
+
   final _$itemIDAtom = Atom(name: '_ListStoreBase.itemID');
 
   @override
-  String get itemID {
+  List<String> get itemID {
     _$itemIDAtom.reportRead();
     return super.itemID;
   }
 
   @override
-  set itemID(String value) {
+  set itemID(List<String> value) {
     _$itemIDAtom.reportWrite(value, super.itemID, () {
       super.itemID = value;
+    });
+  }
+
+  final _$itemColorAtom = Atom(name: '_ListStoreBase.itemColor');
+
+  @override
+  String get itemColor {
+    _$itemColorAtom.reportRead();
+    return super.itemColor;
+  }
+
+  @override
+  set itemColor(String value) {
+    _$itemColorAtom.reportWrite(value, super.itemColor, () {
+      super.itemColor = value;
     });
   }
 
@@ -73,13 +118,13 @@ mixin _$ListStore on _ListStoreBase, Store {
       Atom(name: '_ListStoreBase.txtItemDescription');
 
   @override
-  ObservableList<TextEditingController>? get txtItemDescription {
+  String get txtItemDescription {
     _$txtItemDescriptionAtom.reportRead();
     return super.txtItemDescription;
   }
 
   @override
-  set txtItemDescription(ObservableList<TextEditingController>? value) {
+  set txtItemDescription(String value) {
     _$txtItemDescriptionAtom.reportWrite(value, super.txtItemDescription, () {
       super.txtItemDescription = value;
     });
@@ -100,82 +145,59 @@ mixin _$ListStore on _ListStoreBase, Store {
     });
   }
 
-  final _$addItemDescriptionAsyncAction =
-      AsyncAction('_ListStoreBase.addItemDescription');
-
-  @override
-  Future<bool> addItemDescription(dynamic value) {
-    return _$addItemDescriptionAsyncAction
-        .run(() => super.addItemDescription(value));
-  }
-
-  final _$removeItemDescriptionAsyncAction =
-      AsyncAction('_ListStoreBase.removeItemDescription');
-
-  @override
-  Future removeItemDescription(dynamic _index) {
-    return _$removeItemDescriptionAsyncAction
-        .run(() => super.removeItemDescription(_index));
-  }
-
-  final _$updateAllItensDescriptionAsyncAction =
-      AsyncAction('_ListStoreBase.updateAllItensDescription');
-
-  @override
-  Future updateAllItensDescription() {
-    return _$updateAllItensDescriptionAsyncAction
-        .run(() => super.updateAllItensDescription());
-  }
-
-  final _$updateItemDescriptionAsyncAction =
-      AsyncAction('_ListStoreBase.updateItemDescription');
-
-  @override
-  Future updateItemDescription(dynamic _index, dynamic value) {
-    return _$updateItemDescriptionAsyncAction
-        .run(() => super.updateItemDescription(_index, value));
-  }
-
-  final _$getAllItemDescriptionAsyncAction =
-      AsyncAction('_ListStoreBase.getAllItemDescription');
-
-  @override
-  Future getAllItemDescription() {
-    return _$getAllItemDescriptionAsyncAction
-        .run(() => super.getAllItemDescription());
-  }
-
   final _$_ListStoreBaseActionController =
       ActionController(name: '_ListStoreBase');
 
   @override
-  dynamic setItemID(dynamic _itemID) {
+  dynamic incrementIndex() {
     final _$actionInfo = _$_ListStoreBaseActionController.startAction(
-        name: '_ListStoreBase.setItemID');
+        name: '_ListStoreBase.incrementIndex');
     try {
-      return super.setItemID(_itemID);
+      return super.incrementIndex();
     } finally {
       _$_ListStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  dynamic updateTextFormField() {
+  dynamic setTextItem(dynamic _txtItemDescription) {
     final _$actionInfo = _$_ListStoreBaseActionController.startAction(
-        name: '_ListStoreBase.updateTextFormField');
+        name: '_ListStoreBase.setTextItem');
     try {
-      return super.updateTextFormField();
+      return super.setTextItem(_txtItemDescription);
     } finally {
       _$_ListStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  dynamic changeColor(int _index) {
+  dynamic setlistID(dynamic _listID) {
     final _$actionInfo = _$_ListStoreBaseActionController.startAction(
-        name: '_ListStoreBase.changeColor');
+        name: '_ListStoreBase.setlistID');
     try {
-      return super.changeColor(_index);
+      return super.setlistID(_listID);
+    } finally {
+      _$_ListStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setitemID(dynamic _itemID) {
+    final _$actionInfo = _$_ListStoreBaseActionController.startAction(
+        name: '_ListStoreBase.setitemID');
+    try {
+      return super.setitemID(_itemID);
+    } finally {
+      _$_ListStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setColor(dynamic _itemColor) {
+    final _$actionInfo = _$_ListStoreBaseActionController.startAction(
+        name: '_ListStoreBase.setColor');
+    try {
+      return super.setColor(_itemColor);
     } finally {
       _$_ListStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -185,7 +207,10 @@ mixin _$ListStore on _ListStoreBase, Store {
   String toString() {
     return '''
 itemDescription: ${itemDescription},
+index: ${index},
+listID: ${listID},
 itemID: ${itemID},
+itemColor: ${itemColor},
 lowLightColor: ${lowLightColor},
 highLigthColor: ${highLigthColor},
 txtItemDescription: ${txtItemDescription},

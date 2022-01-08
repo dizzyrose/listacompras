@@ -8,27 +8,27 @@ import 'package:uuid/uuid.dart';
 
 class ListItensSlidableWidget extends StatefulWidget {
   const ListItensSlidableWidget(
-      {Key? key, required this.store, required this.index})
+      {Key? key, required this.store, required this.itemDescription})
       : super(key: key);
   final ListStore store;
-  final int index;
+  final String itemDescription;
 
   @override
   _ListItensSlidableWidgetState createState() => _ListItensSlidableWidgetState(
-      key: UniqueKey(), store: store, index: index);
+      key: UniqueKey(), store: store, itemDescription: itemDescription);
 }
 
 class _ListItensSlidableWidgetState
     extends ModularState<ListItensSlidableWidget, ListStore> {
   _ListItensSlidableWidgetState(
-      {Key? key, required this.store, required this.index});
+      {Key? key, required this.store, required this.itemDescription});
 
   final ListStore store;
-  final int index;
+  final String itemDescription;
 
   @override
   Widget build(BuildContext context) {
-    print("log -- Slidable Construction, index: " + index.toString());
+    print("log -- Slidable Construction, index: ");
     return Container(
         child: Slidable(
       key: Key(Uuid().v1().toString()),
@@ -39,10 +39,7 @@ class _ListItensSlidableWidgetState
         // }),
         children: [
           SlidableAction(
-            onPressed: (value) {
-              store.removeItemDescription(index);
-              store.updateTextFormField();
-            },
+            onPressed: (value) {},
             backgroundColor: Color(0xFFFE4A49),
             foregroundColor: Colors.white,
             icon: Icons.delete,
@@ -54,9 +51,7 @@ class _ListItensSlidableWidgetState
         motion: ScrollMotion(),
         children: [
           SlidableAction(
-            onPressed: (value) {
-              store.changeColor(index);
-            },
+            onPressed: (value) {},
             backgroundColor: Color(0xFF7BC043),
             foregroundColor: Colors.white,
             icon: Icons.edit,
@@ -64,10 +59,7 @@ class _ListItensSlidableWidgetState
           ),
         ],
       ),
-      child: CardWidget(
-        store: store,
-        index: index,
-      ),
+      child: CardWidget(store: store, itemDescription: itemDescription),
     ));
   }
 }

@@ -44,7 +44,8 @@ class ShowDialogWidget {
                     onPressed: () {
                       if (titleListController.text.isNotEmpty) {
                         Modular.to.pop();
-                        ListRepository().createList(titleListController.text);
+                        ListRepository()
+                            .createList(titleListController.text, "branco");
                       } else {}
                     },
                     icon: Icon(Icons.save),

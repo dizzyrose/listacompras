@@ -1,34 +1,66 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:listadecompras/app/domain/app-constants.dart';
 import 'package:listadecompras/app/repositories/interfaces/list-itens-interface-repository.dart';
+import 'package:uuid/uuid.dart';
 
 class ListItensRepository implements IListItensRepository {
   @override
-  updateItem(var itemID, var itemDescription) {
+  updateItem(var listID, var itemID, var itemDescription, var itemColor) {
     FirebaseFirestore.instance
-        .collection('Usuarios')
+        .collection('Users')
         .doc(userMail)
-        .collection('ListaDeCompras')
+        .collection('List')
+        .doc(listID)
+        .collection('Itens')
         .doc(itemID)
-        .update({'ItensDaLista': itemDescription});
+        .update({
+      'Item': itemDescription,
+      'ItemColor:': itemColor,
+      'UpdatedAt': DateTime.now(),
+    });
   }
 
   @override
-  readItem(String _listID) async {
-    print(_listID);
-
-    var collection = FirebaseFirestore.instance
-        .collection("Usuarios")
-        .doc(userMail)
-        .collection('ListaDeCompras');
-    var documentSnapshot = await collection.doc(_listID).get();
-
-    if (documentSnapshot.exists) {
-      Map<String, dynamic>? data = documentSnapshot.data();
-      var value = data?['ItensDaLista'];
-      return List<String>.from(value);
-    } else {
-      return [];
+  createItem(var listID, var itemDescription, var itemColor) {
+    try {
+      FirebaseFirestore.instance
+          .collection('Users')
+          .doc(userMail)
+          .collection('List')
+          .doc(listID)
+          .collection('Itens')
+          .doc(Uuid().v1())
+          .set({
+        'Item': itemDescription,
+        'ItemColor': itemColor,
+        'insertedAt': DateTime.now(),
+      });
+    } catch (e) {
+      print(e.toString());
     }
+  }
+
+  @override
+  readItem(String listID) {
+    return FirebaseFirestore.instance
+        .collection("Users")
+        .doc(userMail)
+        .collection('List')
+        .doc(listID)
+        .collection('Itens')
+        .where('Item', isNotEqualTo: "")
+        .snapshots();
+  }
+
+  @override
+  deleteItem(var listID, var itemID) {
+    FirebaseFirestore.instance
+        .collection("Users")
+        .doc(userMail)
+        .collection('List')
+        .doc(listID)
+        .collection('Itens')
+        .doc(itemID)
+        .delete();
   }
 }

@@ -26,8 +26,9 @@ class ListPageState extends ModularState<ListPage, ListStore> {
 
   @override
   void initState() {
-    store.itemID = listID;
-    store.itemDescription = ObservableList<String>();
+    print(listID);
+    store.setlistID(listID);
+    //  store.itemDescription = ObservableList<String>();
     super.initState();
   }
 
@@ -41,7 +42,6 @@ class ListPageState extends ModularState<ListPage, ListStore> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            store.updateAllItensDescription();
             Modular.to.navigate('/');
           },
         ),
@@ -54,11 +54,11 @@ class ListPageState extends ModularState<ListPage, ListStore> {
                 fit: BoxFit.cover)),
         child: Container(
             //  color: Colors.red,
-            // width: MediaQuery.of(context).size.width,
+            //  width: MediaQuery.of(context).size.width,
             // height: MediaQuery.of(context).size.height * .7,
             child: Column(
           children: [
-            ListItensWidget(store: store),
+            Expanded(child: ListItensWidget(store: store)),
           ],
         )),
       ),
@@ -67,7 +67,7 @@ class ListPageState extends ModularState<ListPage, ListStore> {
         foregroundColor: Colors.black,
         //   tooltip: tipBtnCreateList,
         onPressed: () {
-          createNewList(context);
+          ListItensShowDialogWidget().createNewList(store, context);
         },
         child: Icon(Icons.add),
       ),
@@ -110,29 +110,7 @@ class ListPageState extends ModularState<ListPage, ListStore> {
                     width: MediaQuery.of(context).size.width / 6,
                   ),
                   ElevatedButton.icon(
-                      onPressed: () async {
-                        try {
-                          if (titleListController.text.isNotEmpty) {
-                            Navigator.of(context).pop();
-                            var oldValue = store.itemDescription.length;
-                            bool addItem = await store
-                                .addItemDescription(titleListController.text);
-                            bool getAllItens =
-                                await store.getAllItemDescription();
-                            bool updateAllItens =
-                                await store.updateAllItensDescription();
-                            await store.updateTextFormField();
-                            await asyncWhen((_) =>
-                                addItem && getAllItens && updateAllItens);
-                            print("log --: old size: " +
-                                oldValue.toString() +
-                                " new size: " +
-                                store.itemDescription.length.toString());
-                          }
-                        } catch (e) {
-                          print("log -- error on add item: " + e.toString());
-                        }
-                      },
+                      onPressed: () {},
                       icon: Icon(Icons.save),
                       style: ElevatedButton.styleFrom(primary: Colors.blue),
                       label: Text(listTitleTextSave,
